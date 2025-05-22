@@ -1,0 +1,7 @@
+# Python venv
+.venv/
+# caches
+__pycache__/
+*.pyc
+# local secrets
+.env
