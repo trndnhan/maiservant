@@ -1,0 +1,315 @@
+/* === External Imports === */
+@import 'tailwindcss';
+
+/* === Plugin Directives === */
+@plugin "tailwindcss-animate";
+@plugin 'tailwind-scrollbar';
+
+/* === Custom Variants === */
+@custom-variant dark (&:is(.dark *));
+
+/* === Theme Variables & Custom Classes === */
+/* === Theme Variables & Custom Properties === */
+
+@theme {
+  /* Font variables */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-playfair-display: var(--font-playfair);
+  --font-poppins: var(--font-poppins);
+  --font-jetbrains-mono: var(--font-jetbrains-mono);
+  --font-roboto: var(--font-roboto);
+  --font-segoe: 'Segoe UI', var(--font-emoji), serif;
+
+  --animate-first: moveVertical 16s ease infinite;
+  --animate-second: moveInCircle 15s reverse infinite;
+  --animate-third: moveInCircle 17s linear infinite;
+  --animate-fourth: moveHorizontal 18s ease infinite;
+  --animate-fifth: moveInCircle 19s ease infinite;
+
+  --color-signinup1: #d4f9a8;
+  --color-signinup2: #f9a8d4;
+  --color-signinup3: #a8d4f9;
+  --color-greenpt: #f5fdf9;
+}
+
+@import 'github-markdown-css/github-markdown.css';
+
+.chat-input {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+}
+
+.markdown-body {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Light‑mode link color */
+.markdown-body a {
+  color: #0366d6 !important;
+}
+.markdown-body a:hover {
+  color: #0356b6 !important;
+}
+
+/* Dark‑mode overrides: target when <html> or <body> has class="dark" */
+.dark .markdown-body {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+.dark .markdown-body a {
+  color: #58a6ff !important;
+}
+.dark .markdown-body a:hover {
+  color: #419dff !important;
+}
+
+.markdown-body table,
+.markdown-body table th,
+.markdown-body table td {
+  background-color: #ffffff !important;
+}
+.markdown-body table tbody tr:nth-child(odd) td {
+  background-color: #f6f8fa !important;
+}
+.dark .markdown-body table,
+.dark .markdown-body table th,
+.dark .markdown-body table td {
+  background-color: #1e2a35 !important;
+}
+.dark .markdown-body table tbody tr:nth-child(even) td {
+  background-color: #262d33 !important;
+}
+
+/* === Code Block Overrides === */
+.markdown-body pre {
+  background-color: #f0f0f0 !important;
+  padding: 1em !important;
+  border-radius: 6px !important;
+}
+.markdown-body pre code {
+  background-color: transparent !important;
+}
+.dark .markdown-body pre {
+  background-color: #1e1e1e !important;
+}
+.dark .markdown-body pre code {
+  background-color: transparent !important;
+}
+
+.markdown-body pre,
+.markdown-body pre code,
+.markdown-body code {
+  color: #000000 !important;
+}
+
+/* If you need a separate rule in dark mode (optional, since black works on any background) */
+.dark .markdown-body pre,
+.dark .markdown-body pre code,
+.dark .markdown-body code {
+  color: #000000 !important;
+}
+
+.markdown-body ul {
+  list-style-type: disc !important;
+  padding-left: 2em;
+}
+.markdown-body li {
+  margin-left: 0;
+}
+
+/* Move the CSS rule for .animate-gradient outside the @theme block */
+@layer components {
+  .animate-gradient {
+    background: linear-gradient(var(--gradient-angle, 271deg), #b6f472, #f472b6, #72b6f4);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradient var(--gradient-duration, 3s) ease infinite;
+  }
+}
+
+/* === Keyframes === */
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Other keyframes... */
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(50%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+}
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* === CSS Variables for Light Mode === */
+:root {
+  --background: oklch(0.9777 0.0107 339.33);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.9777 0.0107 339.33);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* === CSS Variables for Dark Mode === */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+/* === Theme Inline Variables === */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* === Base Layer Styles === */
+@layer base {
+  body {
+    font-family: var(--font-roboto);
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Hide the built-in "eye" icon in Edge/IE 10+ */
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
+
+/* Hide the built-in "eye" icon in Safari/Chrome/Opera */
+input[type='password']::-webkit-textfield-decoration-container {
+  display: none;
+}
