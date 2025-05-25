@@ -27,7 +27,14 @@ Just a simple full-stack LLM-chat web application featuring a Next.js frontend a
   - Context-aware LLM responses: retrieves relevant past messages from the same session for continuity
   - Model flexibility: switch between different LLMs mid-conversation
   - Smart session handling: users are automatically logged out after token expiration or inactivity
-
+### **🚇 UPCOMING FEATURES!!! (Not in any particular order)**
+-    **Advanced Authentication**: OAuth login, magic link via email, and password reset functionality
+    
+-    **Message Controls**: Edit or delete messages, and regenerate LLM responses on demand
+    
+-    **Multimodal RAG**: Enable Retrieval-Augmented Generation on user-uploaded documents, with support for **audio** and **image** inputs
+    
+-    **Custom AI Assistants**: Design and deploy personalized “servants” with full control over behavior, tools, and personalit
 
 ## Demo ⛅️
 
