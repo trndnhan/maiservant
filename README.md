@@ -14,13 +14,13 @@ Just a simple full-stack LLM-chat web application featuring a Next.js frontend a
 
 ## Features 🍓
 
-- **💃 Beautifully Designed Authentication Flow** 
+### **💃 Beautifully Designed Authentication Flow** 
   - Animated gradient background with a sleek logo animation
   - Dynamic call-to-action (CTA) using typing effects
   - Tabbed Sign Up / Sign In forms with smooth transitions
   - Stylish floating label inputs and interactive buttons with hover effects
   - Secure authentication powered by JWT tokens via FastAPI Users
-- **😝 Interactive Real-Time Chat Experience**
+### **😝 Interactive Real-Time Chat Experience**
   - Responsive chat interface with a collapsible sidebar that nests seamlessly into the layout
   - Real-time communication powered by WebSockets using Socket.IO (Client + FastAPI) and Agno
   - Persistent chat history per user, with support for renaming and deleting sessions
