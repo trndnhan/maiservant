@@ -6,9 +6,9 @@ Just a simple full-stack LLM-chat web application featuring a Next.js frontend a
 
 ## Tech Stack 🎬
 
-**🏏 Client:** Next.js, React, TailwindCSS, ShadCN/Radix UI, Zustand, TanStack/Query, Socket.IO Client
+**🏏 Client:** Next.js, React, TailwindCSS, ShadCN/Radix UI, Zustand, TanStack/Query, Socket.IO Client, Axios, Framer-Motion, React Hook Form, Zod
 
-**🐝 Server:** FastAPI, FastAPI Users, FastAPI Socket.IO, Agno
+**🐝 Server:** FastAPI, FastAPI Users, FastAPI Socket.IO, Agno, Beanie
 
 **💴 Database:** MongoDB
 
@@ -16,7 +16,7 @@ Just a simple full-stack LLM-chat web application featuring a Next.js frontend a
 
 *Please beware that I will add much more features, so stay tuned!*
 
-*Please also ignore the white gaps at the top and botom of the video. I used Canva to make this video, and they won't allow me to edit the video's  size unless I give them money.* 🤑
+*Please also ignore the white gaps at the top and botom of the video. I used Canva to make this video, and they won't allow me to edit the video's  size unless I pay them money.* 🤑
 
 [![Watch the video](https://github.com/user-attachments/assets/9fda239c-8c01-4642-a8df-7dfbd5620b03)](https://drive.google.com/file/d/1IVGb64n16T5fOAgfLVv-bEMVsJuLs8hn/view?usp=sharing)
 
