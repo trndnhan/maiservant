@@ -14,9 +14,7 @@ Just a simple full-stack LLM-chat web application featuring a Next.js frontend a
 
 ## Demo ⛅️
 
-*Currently, this project is following the **client-server** architecture. I will try to convert this project to a **serverless** version so that it can be deployed on Vercel.*
-
-*For now, please watch this video to take a glipmse of what my project looks like instead! Please beware that I will add much more features, so stay tuned!*
+*Please beware that I will add much more features, so stay tuned!*
 
 *Please also ignore the white gaps at the top and botom of the video. I used Canva to make this video, and they won't allow me to edit the video's  size unless I give them money.* 🤑
 
