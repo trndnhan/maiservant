@@ -4,7 +4,7 @@ import { SidebarGroup, SidebarGroupLabel } from '@/components/ui/sidebar'
 import { useRandomEmojis } from '@/hooks/useRandomEmojis'
 import { useRouter, useParams } from 'next/navigation'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, Loader } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,6 +16,7 @@ import { useSessionActionsWithHandlers } from '@/hooks/chat/useSessionActions'
 import { Button } from '@/components/ui/button'
 import { RenameDialog } from '@/components/chat/renameDialog'
 import { DeleteAlertDialog } from '@/components/chat/deleteAlertDialog'
+import { useIsFetching } from '@tanstack/react-query'
 
 interface ChatItem {
   session_id: string
@@ -35,6 +36,10 @@ export function ChatHistory({ items }: ChatHistoryProps) {
   const { chatId: currentChatId } = useParams()
   const { handleRenameSave, handleDelete } = useSessionActionsWithHandlers(router)
 
+  const fetchCount = useIsFetching({
+    queryKey: ['agentSessionMessages', currentChatId]
+  })
+
   return (
     <SidebarGroup>
       {randomEmoji && (
@@ -50,6 +55,7 @@ export function ChatHistory({ items }: ChatHistoryProps) {
           items.map((item) => {
             const isActive = item.session_id === currentChatId
             const isHighlighted = isActive || openSessionId === item.session_id
+            const isLoadingMessages = isActive && fetchCount > 0
 
             return (
               <div
@@ -72,48 +78,54 @@ export function ChatHistory({ items }: ChatHistoryProps) {
                   </TooltipContent>
                 </Tooltip>
 
-                <DropdownMenu
-                  modal={false}
-                  open={openSessionId === item.session_id}
-                  onOpenChange={(open) => setOpenSessionId(open ? item.session_id : null)}
-                >
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      onClick={(e) => e.stopPropagation()}
-                      variant={'ghost'}
-                      className={`cursor-pointer h-1 w-1 transition ${
-                        openSessionId === item.session_id ? 'opacity-100' : 'opacity-0 group-hover/item:opacity-100'
-                      } hover:bg-gray-200`}
-                    >
-                      <MoreHorizontal size={5} />
-                    </Button>
-                  </DropdownMenuTrigger>
+                {isLoadingMessages ? (
+                  <div className='flex items-center justify-center h-5 w-5'>
+                    <Loader size={12} className='animate-spin text-gray-500' />
+                  </div>
+                ) : (
+                  <DropdownMenu
+                    modal={false}
+                    open={openSessionId === item.session_id}
+                    onOpenChange={(open) => setOpenSessionId(open ? item.session_id : null)}
+                  >
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        onClick={(e) => e.stopPropagation()}
+                        variant={'ghost'}
+                        className={`cursor-pointer h-5 w-5 transition ${
+                          openSessionId === item.session_id ? 'opacity-100' : 'opacity-0 group-hover/item:opacity-100'
+                        } hover:bg-gray-200`}
+                      >
+                        <MoreHorizontal size={12} />
+                      </Button>
+                    </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align='start' className='w-30 rounded-lg'>
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault()
-                        setRenameOpenId(item.session_id)
-                      }}
-                      className='cursor-pointer font-poppins font-medium'
-                    >
-                      🖊️ <span className='text-xs'>Rename</span>
-                    </DropdownMenuItem>
+                    <DropdownMenuContent align='start' className='w-30 rounded-lg'>
+                      <DropdownMenuItem
+                        onSelect={(e) => {
+                          e.preventDefault()
+                          setRenameOpenId(item.session_id)
+                        }}
+                        className='cursor-pointer font-poppins font-medium'
+                      >
+                        🖊️ <span className='text-xs'>Rename</span>
+                      </DropdownMenuItem>
 
-                    <DropdownMenuSeparator />
+                      <DropdownMenuSeparator />
 
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault()
-                        setDeleteOpenId(item.session_id)
-                        setOpenSessionId(null)
-                      }}
-                      className='cursor-pointer font-poppins'
-                    >
-                      🗑️ <span className='font-semibold text-rose-500 text-xs'>Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <DropdownMenuItem
+                        onSelect={(e) => {
+                          e.preventDefault()
+                          setDeleteOpenId(item.session_id)
+                          setOpenSessionId(null)
+                        }}
+                        className='cursor-pointer font-poppins'
+                      >
+                        🗑️ <span className='font-semibold text-rose-500 text-xs'>Delete</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
 
                 <RenameDialog
                   open={renameOpenId === item.session_id}
