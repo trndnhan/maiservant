@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { motion } from 'framer-motion'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -20,6 +21,16 @@ const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+
+const spring = { type: 'spring', stiffness: 200, damping: 30 }
+
+type DivProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
+
+type SidebarProps = DivProps & {
+  side?: 'left' | 'right'
+  variant?: 'sidebar' | 'floating' | 'inset'
+  collapsible?: 'offcanvas' | 'icon' | 'none'
+}
 
 type SidebarContext = {
   state: 'expanded' | 'collapsed'
@@ -58,18 +69,22 @@ const SidebarProvider = React.forwardRef<
   const [_open, _setOpen] = React.useState(defaultOpen)
   const open = openProp ?? _open
   const setOpen = React.useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === 'function' ? value(open) : value
-      if (setOpenProp) {
-        setOpenProp(openState)
-      } else {
-        _setOpen(openState)
-      }
+    (value: boolean | ((prev: boolean) => boolean)) => {
+      _setOpen((prevOpen) => {
+        const openState = typeof value === 'function' ? (value as (p: boolean) => boolean)(prevOpen) : value
 
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        // Propagate out if it’s a controlled component
+        if (setOpenProp) {
+          setOpenProp(openState)
+        }
+
+        // Persist cookie
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+
+        return openState
+      })
     },
-    [setOpenProp, open]
+    [setOpenProp]
   )
 
   // Helper to toggle the sidebar.
@@ -140,20 +155,17 @@ function Sidebar({
   collapsible = 'offcanvas',
   className,
   children,
-  ...props
-}: React.ComponentProps<'div'> & {
-  side?: 'left' | 'right'
-  variant?: 'sidebar' | 'floating' | 'inset'
-  collapsible?: 'offcanvas' | 'icon' | 'none'
-}) {
+  ...divProps
+}: SidebarProps) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const expanded = state === 'expanded'
 
   if (collapsible === 'none') {
     return (
       <div
         data-slot='sidebar'
         className={cn('bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col', className)}
-        {...props}
+        {...divProps}
       >
         {children}
       </div>
@@ -162,7 +174,7 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...divProps}>
         <SheetHeader className='sr-only'>
           <SheetTitle>Sidebar</SheetTitle>
           <SheetDescription>Displays the mobile sidebar.</SheetDescription>
@@ -193,39 +205,48 @@ function Sidebar({
       data-variant={variant}
       data-side={side}
       data-slot='sidebar'
+      {...divProps}
     >
-      {/* This is what handles the sidebar gap on desktop */}
-      <div
+      {/* Gap element */}
+      <motion.div
+        initial={false}
+        animate={{ width: expanded ? 'var(--sidebar-width)' : 0 }}
+        transition={spring}
         className={cn(
-          'relative h-svh w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear',
-          'group-data-[collapsible=offcanvas]:w-0',
-          'group-data-[side=right]:rotate-180',
+          'relative h-svh bg-transparent',
           variant === 'floating' || variant === 'inset'
             ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)'
+            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
+          'group-data-[side=right]:rotate-180'
         )}
       />
-      <div
+
+      {/* Sliding panel */}
+      <motion.div
+        initial={false}
+        animate={{
+          // slide fully off‐screen using the CSS var
+          x: expanded ? '0px' : side === 'left' ? 'calc(-1 * var(--sidebar-width))' : 'var(--sidebar-width)',
+          opacity: expanded ? 1 : 0
+        }}
+        transition={spring}
         className={cn(
-          'fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex',
-          side === 'left'
-            ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
-            : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
-          // Adjust the padding for floating and inset variants.
+          'fixed inset-y-0 z-10 hidden h-svh md:flex',
+          side === 'left' ? 'left-0' : 'right-0',
           variant === 'floating' || variant === 'inset'
-            ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-            : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
+            ? 'p-2'
+            : 'group-data-[side=left]:border-r group-data-[side=right]:border-l',
           className
         )}
-        {...props}
+        style={{ width: 'var(--sidebar-width)' }}
       >
         <div
           data-sidebar='sidebar'
-          className='bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-md'
+          className='bg-sidebar flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-md'
         >
           {children}
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
