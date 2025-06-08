@@ -30,11 +30,11 @@ export function useSessionMessages(sessionId: string) {
   ])
 
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery<
-    Message[], // TQueryFnData
-    Error, // TError
-    InfiniteData<Message[], string | undefined>, // TData
-    ['agentSessionMessages', string], // TQueryKey
-    string | undefined // TPageParam
+    Message[],
+    Error,
+    InfiniteData<Message[], string | undefined>,
+    ['agentSessionMessages', string],
+    string | undefined
   >({
     queryKey: ['agentSessionMessages', sessionId],
     queryFn: async ({ pageParam }) => {
@@ -48,11 +48,9 @@ export function useSessionMessages(sessionId: string) {
     },
     getNextPageParam: (lastPage) => (lastPage.length === 4 ? lastPage[0].created_at : undefined),
 
-    // 2) **Seed** with our placeholder/page-zero so React-Query never creates an empty page:
     initialData: () => initialData,
     initialPageParam: undefined,
 
-    // 3) Never auto-refetch while streaming:
     staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

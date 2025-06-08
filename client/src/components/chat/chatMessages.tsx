@@ -6,7 +6,7 @@ import { ChatInputForm } from '@/components/chat/chatInputForm'
 import { useChat } from '@/hooks/chat/useChat'
 import { ChatBubble, ChatBubbleAction, ChatBubbleMessage } from '@/components/ui/chat-bubble'
 import { ChatMessageList } from '@/components/ui/chat-message-list'
-import { CopyIcon, Loader } from 'lucide-react'
+import { CopyIcon, Loader, ArrowDownIcon } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ChatSkeleton } from '@/components/chat/chatSkeleton'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -31,6 +31,13 @@ function getMarginClass(lines: number) {
   return 'mb-20'
 }
 
+function getScrollButtonBottomClass(lines: number) {
+  if (lines <= 1) return 'bottom-40'
+  if (lines === 2) return 'bottom-45'
+  if (lines === 3) return 'bottom-50'
+  return 'bottom-55'
+}
+
 export function ChatMessages({ chatId }: ChatMessagesProps) {
   const chatProps = useChat()
   const { messages, loading, error, scrollAreaRef, isFetchingNextPage } = useSessionMessages(chatId)
@@ -42,52 +49,72 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
   const isNewSession = searchParams.get('new') === 'true'
   const socketRef = chatProps.socketRef
 
+  // Stream ready for new session
   useEffect(() => {
     if (isNewSession && socketRef.current) {
       socketRef.current.emit('stream_ready', { session_id: chatId })
     }
   }, [isNewSession, chatId, socketRef])
 
+  // Track scroll position on viewport (only after initial load done)
   useEffect(() => {
-    if (messages.length > 0) setIsInitialLoad(false)
-  }, [messages])
-
-  const handleScroll = () => {
-    const vp = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (isInitialLoad) return
+    const vp = scrollAreaRef.current?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]')
     if (!vp) return
-    const distanceFromBottom = vp.scrollHeight - (vp.scrollTop + vp.clientHeight)
-    setAutoScrollEnabled(distanceFromBottom < 20)
+    const onScroll = () => {
+      const distanceFromBottom = vp.scrollHeight - (vp.scrollTop + vp.clientHeight)
+      setAutoScrollEnabled(distanceFromBottom < 20)
+    }
+    vp.addEventListener('scroll', onScroll)
+    // initialize state
+    onScroll()
+    return () => vp.removeEventListener('scroll', onScroll)
+  }, [scrollAreaRef, isInitialLoad])
+
+  // Scroll to bottom helper
+  const scrollToBottom = () => {
+    const vp = scrollAreaRef.current?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]')
+    if (!vp) return
+
+    const smoothScroll = () => {
+      const maxScrollTop = vp.scrollHeight - vp.clientHeight
+      vp.scrollTo({ top: maxScrollTop, behavior: 'smooth' })
+
+      // Wait until scroll is finished
+      const checkIfAtBottom = () => {
+        const current = vp.scrollTop
+        if (Math.abs(current - maxScrollTop) <= 2) {
+          setAutoScrollEnabled(true)
+          return
+        }
+        requestAnimationFrame(checkIfAtBottom)
+      }
+
+      requestAnimationFrame(checkIfAtBottom)
+    }
+
+    smoothScroll()
   }
 
+  // Handle new messages and initial load scroll
   useEffect(() => {
     const last = messages[messages.length - 1]
-    const scrollViewport = scrollAreaRef.current?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]')
-    if (!scrollViewport || !last) return
+    const vp = scrollAreaRef.current?.querySelector<HTMLElement>('[data-radix-scroll-area-viewport]')
+    if (!vp || !last) return
 
     const lastId = `${last.created_at}_${last.role}`
     if (prevLastIdRef.current === lastId) return
     prevLastIdRef.current = lastId
 
-    if (last.role === 'user') {
-      window.requestAnimationFrame(() => {
-        scrollViewport.scrollTop = scrollViewport.scrollHeight
-      })
-      return
+    if (isInitialLoad) {
+      // jump instantly on first load
+      vp.scrollTop = vp.scrollHeight
+      setIsInitialLoad(false)
+    } else if (autoScrollEnabled) {
+      // smooth scroll for incoming messages
+      vp.scrollTo({ top: vp.scrollHeight, behavior: 'smooth' })
     }
-
-    if (last.role === 'assistant' && last.streaming && autoScrollEnabled) {
-      window.requestAnimationFrame(() => {
-        scrollViewport.scrollTop = scrollViewport.scrollHeight
-      })
-      return
-    }
-
-    if (last.role === 'assistant' && !last.streaming) {
-      window.requestAnimationFrame(() => {
-        scrollViewport.scrollTop = scrollViewport.scrollHeight
-      })
-    }
-  }, [messages, autoScrollEnabled, scrollAreaRef])
+  }, [messages, autoScrollEnabled, isInitialLoad, scrollAreaRef])
 
   if (loading && messages.length === 0) {
     return (
@@ -106,13 +133,7 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
 
   return (
     <div className='flex flex-col h-screen'>
-      <ScrollArea
-        ref={scrollAreaRef}
-        className='h-3/4 overflow-y-auto'
-        onScroll={handleScroll}
-        aria-label='Chat messages'
-        tabIndex={0}
-      >
+      <ScrollArea ref={scrollAreaRef} className='h-3/4 overflow-y-auto' aria-label='Chat messages' tabIndex={0}>
         <div className={`w-full md:w-[850px] mx-auto bg-muted/40 ${marginClass}`}>
           {isFetchingNextPage && (
             <div className='flex items-center justify-center'>
@@ -171,6 +192,26 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
           </ChatMessageList>
         </div>
       </ScrollArea>
+
+      {/* Scroll to bottom button */}
+      <AnimatePresence>
+        {!autoScrollEnabled && (
+          <motion.button
+            key='scroll-button'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={scrollToBottom}
+            className={`absolute left-1/2 transform -translate-x-1/2 bg-white shadow-md p-2 rounded-full z-10 transition ease-in-out duration-300 hover:scale-105 ${getScrollButtonBottomClass(
+              lineCount
+            )}`}
+            aria-label='Scroll to bottom'
+          >
+            <ArrowDownIcon className='h-5 w-5' />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <div className='absolute bottom-3 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[750px] p-3 bg-gray-100 shadow-md flex-shrink-0 rounded-3xl'>
         <ChatInputForm {...chatProps} onLineCountChange={setLineCount} />
