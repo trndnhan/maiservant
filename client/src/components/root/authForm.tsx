@@ -119,7 +119,7 @@ export const AuthForm = () => {
                         <Button
                           type='submit'
                           disabled={loading || !signUpForm.formState.isValid}
-                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-6 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
+                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
                           effect='shineHover'
                         >
                           {loading && <Loader2 className='animate-spin h-4 w-4' />}
@@ -195,7 +195,7 @@ export const AuthForm = () => {
                         <Button
                           type='submit'
                           disabled={loading || !signInForm.formState.isValid}
-                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-6 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
+                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
                           effect='shineHover'
                         >
                           {loading && <Loader2 className='animate-spin h-4 w-4' />}

@@ -16,7 +16,6 @@ import { useSessionActionsWithHandlers } from '@/hooks/chat/useSessionActions'
 import { Button } from '@/components/ui/button'
 import { RenameDialog } from '@/components/chat/renameDialog'
 import { DeleteAlertDialog } from '@/components/chat/deleteAlertDialog'
-import { useIsFetching } from '@tanstack/react-query'
 
 interface ChatItem {
   session_id: string
@@ -25,9 +24,10 @@ interface ChatItem {
 
 interface ChatHistoryProps {
   items: ChatItem[]
+  loadingSessionId?: string | null
 }
 
-export function ChatHistory({ items }: ChatHistoryProps) {
+export function ChatHistory({ items, loadingSessionId }: ChatHistoryProps) {
   const [openSessionId, setOpenSessionId] = React.useState<string | null>(null)
   const [renameOpenId, setRenameOpenId] = React.useState<string | null>(null)
   const [deleteOpenId, setDeleteOpenId] = React.useState<string | null>(null)
@@ -35,10 +35,6 @@ export function ChatHistory({ items }: ChatHistoryProps) {
   const router = useRouter()
   const { chatId: currentChatId } = useParams()
   const { handleRenameSave, handleDelete } = useSessionActionsWithHandlers(router)
-
-  const fetchCount = useIsFetching({
-    queryKey: ['agentSessionMessages', currentChatId]
-  })
 
   return (
     <SidebarGroup>
@@ -55,7 +51,7 @@ export function ChatHistory({ items }: ChatHistoryProps) {
           items.map((item) => {
             const isActive = item.session_id === currentChatId
             const isHighlighted = isActive || openSessionId === item.session_id
-            const isLoadingMessages = isActive && fetchCount > 0
+            const isLoadingMessages = item.session_id === loadingSessionId
 
             return (
               <div

@@ -12,6 +12,7 @@ import { useSessions } from '@/hooks/chat/useSessions'
 import useModelStore, { ExtendedModel } from '@/stores/modelStore'
 import { useParams } from 'next/navigation'
 import { modelGroups } from '@/data/modelGroups'
+import { useSessionMessages } from '@/hooks/chat/useSessionMessages'
 
 const navSecondary = [
   {
@@ -27,6 +28,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const setSelectedModel = useModelStore((state) => state.setSelectedModel)
 
   const { chatId: currentChatId } = useParams() as { chatId?: string }
+  const { loading: isInitialMessagesLoading } = useSessionMessages(currentChatId || '')
 
   React.useEffect(() => {
     if (!currentChatId || sessions.length === 0) return
@@ -71,7 +73,10 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         ) : sessError ? (
           <div className='text-sm text-red-500 p-2'>{sessError.message}</div>
         ) : (
-          <ChatHistory items={sessions.map((s) => ({ session_id: s.session_id, title: s.title }))} />
+          <ChatHistory
+            items={sessions.map((s) => ({ session_id: s.session_id, title: s.title }))}
+            loadingSessionId={isInitialMessagesLoading ? currentChatId : null}
+          />
         )}
       </SidebarContent>
 
