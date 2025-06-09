@@ -5,10 +5,8 @@ import { cn } from '@/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import MessageLoading from '@/components/ui/message-loading'
 import { Button, ButtonProps } from '@/components/ui/button'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeHighlight from 'rehype-highlight'
 import 'github-markdown-css'
+import { AnimatedMarkdown } from 'flowtoken'
 
 // ChatBubble
 const chatBubbleVariant = cva('flex gap-1 items-end relative group', {
@@ -69,7 +67,7 @@ const chatBubbleMessageVariants = cva('', {
     },
     layout: {
       default: '',
-      ai: 'border-t w-full rounded-none bg-white'
+      ai: 'w-full rounded-none bg-transparent'
     }
   },
   defaultVariants: {
@@ -83,11 +81,16 @@ interface ChatBubbleMessageProps
     VariantProps<typeof chatBubbleMessageVariants> {
   isLoading?: boolean
   isMarkdown?: boolean
+  streaming?: boolean
 }
 
 const ChatBubbleMessage = React.forwardRef<HTMLDivElement, ChatBubbleMessageProps>(
-  ({ className, variant, layout, isLoading = false, isMarkdown = false, children, ...props }, ref) => {
+  (
+    { className, variant, layout, isLoading = false, isMarkdown = false, streaming = false, children, ...props },
+    ref
+  ) => {
     const content = typeof children === 'string' ? children : ''
+    const animationName = streaming ? 'slideUp' : null
 
     return (
       <div
@@ -104,9 +107,13 @@ const ChatBubbleMessage = React.forwardRef<HTMLDivElement, ChatBubbleMessageProp
           </div>
         ) : isMarkdown ? (
           <div className='markdown-body'>
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
-              {content}
-            </ReactMarkdown>
+            <AnimatedMarkdown
+              content={content}
+              sep='word'
+              animation={animationName}
+              animationDuration='0.7s'
+              animationTimingFunction='ease-in-out'
+            />
           </div>
         ) : (
           children

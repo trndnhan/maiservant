@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/providers'
+import 'flowtoken/dist/styles.css'
 
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],

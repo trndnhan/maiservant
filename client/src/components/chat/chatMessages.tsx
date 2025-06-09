@@ -144,7 +144,7 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
             <AnimatePresence>
               {messages.map((message, index) => {
                 const variant = getVariant(message.role)
-                const isMarkdown = message.role === 'assistant'
+                const layout = message.role === 'assistant' ? 'ai' : 'default'
                 const isPlaceholder = message.role === 'assistant' && message.content === ''
                 return (
                   <motion.div
@@ -158,7 +158,13 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
                   >
                     <ChatBubble variant={variant} layout={message.role === 'assistant' ? 'ai' : 'default'}>
                       <div className='flex flex-col text-sm'>
-                        <ChatBubbleMessage variant={variant} isMarkdown={isMarkdown} isLoading={isPlaceholder}>
+                        <ChatBubbleMessage
+                          variant={variant}
+                          layout={layout}
+                          isLoading={isPlaceholder}
+                          isMarkdown={message.role === 'assistant'}
+                          streaming={message.streaming}
+                        >
                           {message.content}
                         </ChatBubbleMessage>
                         {message.role === 'assistant' && !message.streaming && !isPlaceholder && (
