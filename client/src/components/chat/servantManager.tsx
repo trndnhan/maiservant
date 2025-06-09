@@ -29,7 +29,7 @@ export function ServantManager({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild size='default' className='font-poppins tracking-tight'>
+              <SidebarMenuButton asChild size='default' className='font-poppins tracking-tight px-4 py-3'>
                 <a href={item.url}>
                   <span className='text-lg'>{item.icon} </span>
                   <span>{item.title}</span>

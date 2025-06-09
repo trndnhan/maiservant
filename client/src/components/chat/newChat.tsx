@@ -37,7 +37,7 @@ export default function NewChat() {
         </motion.h2>
 
         <motion.div
-          className='w-9/10 md:w-[750px] font-sans shadow-md relative rounded-3xl border bg-gray-50 focus-within:ring-1 focus-within:ring-ring p-3 z-10'
+          className='w-9/10 md:w-[750px] font-sans shadow-md relative rounded-xl border bg-gray-50 focus-within:ring-1 focus-within:ring-ring p-3 z-10'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}

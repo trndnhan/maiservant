@@ -219,7 +219,7 @@ export function ChatMessages({ chatId }: ChatMessagesProps) {
         )}
       </AnimatePresence>
 
-      <div className='absolute bottom-3 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[750px] p-3 bg-gray-100 shadow-md flex-shrink-0 rounded-3xl'>
+      <div className='absolute bottom-3 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[750px] p-3 bg-gray-100 shadow-md flex-shrink-0 rounded-xl'>
         <ChatInputForm {...chatProps} onLineCountChange={setLineCount} />
       </div>
     </div>

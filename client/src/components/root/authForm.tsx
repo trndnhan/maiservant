@@ -25,11 +25,11 @@ export const AuthForm = () => {
       className='flex relative items-center justify-center w-full md:w-1/2 font-poppins'
     >
       <Tabs value={isSignup ? 'signup' : 'signin'} onValueChange={(val) => handleTabChange(val as 'signup' | 'signin')}>
-        <TabsList className='grid w-full grid-cols-2 bg-violet-50 shadow-2xl rounded-3xl'>
-          <TabsTrigger value='signup' className='text-xs md:text-sm'>
+        <TabsList className='grid w-full grid-cols-2 bg-violet-50 shadow-2xl rounded-xl'>
+          <TabsTrigger value='signup' className='text-xs md:text-sm rounded-xl'>
             Sign Up
           </TabsTrigger>
-          <TabsTrigger value='signin' className='text-xs md:text-sm'>
+          <TabsTrigger value='signin' className='text-xs md:text-sm rounded-xl'>
             Sign In
           </TabsTrigger>
         </TabsList>
@@ -45,7 +45,7 @@ export const AuthForm = () => {
               >
                 <Form {...signUpForm}>
                   <form noValidate onSubmit={signUpForm.handleSubmit(onSignUp)} className='space-y-4'>
-                    <Card className='bg-violet-50 shadow-2xl rounded-3xl'>
+                    <Card className='bg-violet-50 shadow-2xl rounded-xl'>
                       <CardHeader>
                         <CardTitle className='text-sm md:text-base'>Sign Up</CardTitle>
                         <CardDescription className='text-xs md:text-sm font-segoe'>
@@ -65,7 +65,7 @@ export const AuthForm = () => {
                                     id='full_name'
                                     label='👤 Full Name'
                                     type='text'
-                                    className='text-sm md:text-base rounded-3xl'
+                                    className='text-sm md:text-base rounded-xl'
                                     {...field}
                                   />
                                 </FormControl>
@@ -85,7 +85,7 @@ export const AuthForm = () => {
                                     id='email'
                                     label='📧 Email'
                                     type='email'
-                                    className='text-sm md:text-base rounded-3xl'
+                                    className='text-sm md:text-base rounded-xl'
                                     {...field}
                                   />
                                 </FormControl>
@@ -105,7 +105,7 @@ export const AuthForm = () => {
                                     id='password'
                                     label='🔑 Password'
                                     type='password'
-                                    className='text-sm md:text-base rounded-3xl'
+                                    className='text-sm md:text-base rounded-xl'
                                     {...field}
                                   />
                                 </FormControl>
@@ -119,10 +119,10 @@ export const AuthForm = () => {
                         <Button
                           type='submit'
                           disabled={loading || !signUpForm.formState.isValid}
-                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
+                          className='rounded-xl bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
                           effect='shineHover'
                         >
-                          {loading && <Loader2 className='animate-spin h-4 w-4' />}
+                          {loading && <Loader2 className='animate-spin' />}
                           Sign Up
                         </Button>
                       </CardFooter>
@@ -141,7 +141,7 @@ export const AuthForm = () => {
               >
                 <Form {...signInForm}>
                   <form onSubmit={signInForm.handleSubmit(onSignIn)} className='space-y-4'>
-                    <Card className='bg-violet-50 shadow-2xl rounded-3xl'>
+                    <Card className='bg-violet-50 shadow-2xl rounded-xl'>
                       <CardHeader>
                         <CardTitle className='text-sm md:text-base'>Sign In</CardTitle>
                         <CardDescription className='text-xs md:text-sm font-segoe'>
@@ -161,7 +161,7 @@ export const AuthForm = () => {
                                     id='email'
                                     label='📧 Email'
                                     type='email'
-                                    className='text-sm md:text-base rounded-3xl'
+                                    className='text-sm md:text-base rounded-xl'
                                     {...field}
                                   />
                                 </FormControl>
@@ -181,7 +181,7 @@ export const AuthForm = () => {
                                     id='signin-password'
                                     label='🔑 Password'
                                     type='password'
-                                    className='text-sm md:text-base rounded-3xl'
+                                    className='text-sm md:text-base rounded-xl'
                                     {...field}
                                   />
                                 </FormControl>
@@ -195,10 +195,10 @@ export const AuthForm = () => {
                         <Button
                           type='submit'
                           disabled={loading || !signInForm.formState.isValid}
-                          className='rounded-full bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
+                          className='rounded-xl bg-linear-45 from-signinup1 via-signinup2 to-signinup3 px-5 py-3 text-xs md:text-sm font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_pink] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none'
                           effect='shineHover'
                         >
-                          {loading && <Loader2 className='animate-spin h-4 w-4' />}
+                          {loading && <Loader2 className='animate-spin' />}
                           Sign In
                         </Button>
                       </CardFooter>

@@ -21,16 +21,17 @@ export default function ChooseModel() {
   const { selectedModel, setSelectedModel } = useModelStore()
 
   return (
-    <div className='flex items-center space-x-4 font-poppins tracking-tight'>
+    <div className='flex items-center space-x-1 font-poppins tracking-tight'>
+      <p className='text-muted-foreground text-sm pl-3'>Model: </p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant='ghost'
-            className={cn('cursor-pointer h-9 justify-start transition ease-in-out duration-300 hover:scale-105', {
+            className={cn('cursor-pointer h-9 justify-start px-3', {
               'text-gray-400': !selectedModel
             })}
           >
-            {selectedModel ? selectedModel.label : '+ Choose Model'}
+            {selectedModel ? selectedModel.label : 'Choose Model'}
           </Button>
         </PopoverTrigger>
         <PopoverContent className='p-0 font-poppins' side='right' align='start'>

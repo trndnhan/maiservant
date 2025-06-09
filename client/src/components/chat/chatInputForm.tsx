@@ -65,7 +65,7 @@ export const ChatInputForm: FC<ChatInputFormProps> = ({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className='relative bg-gray-50 rounded-lg shadow-sm p-1 hover:shadow-md transition-shadow duration-200'
+              className='relative bg-gray-50 rounded-xl shadow-sm p-1 hover:shadow-md transition-shadow duration-200'
             >
               <div className='flex items-center'>
                 {file.type.startsWith('image/') ? (
@@ -74,10 +74,10 @@ export const ChatInputForm: FC<ChatInputFormProps> = ({
                     alt={file.name}
                     width={32}
                     height={32}
-                    className='w-8 h-8 object-cover rounded-md mr-1'
+                    className='w-8 h-8 object-cover rounded-xl mr-1'
                   />
                 ) : (
-                  <div className='w-8 h-8 flex items-center justify-center bg-gray-50 rounded-md mr-1'>
+                  <div className='w-8 h-8 flex items-center justify-center bg-gray-50 rounded-xl mr-1'>
                     {file.type === 'application/pdf' ? (
                       <FileText size={20} className='text-red-500' />
                     ) : (
@@ -160,7 +160,7 @@ export const ChatInputForm: FC<ChatInputFormProps> = ({
               type='submit'
               size='sm'
               disabled={isSubmitDisabled}
-              className={`h-8 text-xs rounded-full shadow-md ml-auto gap-1 font-semibold transition ease-in-out duration-300 ${
+              className={`h-8 text-xs rounded-xl shadow-md ml-auto gap-1 font-semibold transition ease-in-out duration-300 ${
                 isSubmitDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 cursor-pointer'
               } bg-linear-225 from-signinup1 via-signinup2 to-signinup3 text-gray-900`}
               effect='shineHover'

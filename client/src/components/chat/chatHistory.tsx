@@ -16,6 +16,8 @@ import { useSessionActionsWithHandlers } from '@/hooks/chat/useSessionActions'
 import { Button } from '@/components/ui/button'
 import { RenameDialog } from '@/components/chat/renameDialog'
 import { DeleteAlertDialog } from '@/components/chat/deleteAlertDialog'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useSessions } from '@/hooks/chat/useSessions'
 
 interface ChatItem {
   session_id: string
@@ -35,6 +37,8 @@ export function ChatHistory({ items, loadingSessionId }: ChatHistoryProps) {
   const router = useRouter()
   const { chatId: currentChatId } = useParams()
   const { handleRenameSave, handleDelete } = useSessionActionsWithHandlers(router)
+
+  const { animatedSessions } = useSessions()
 
   return (
     <SidebarGroup>
@@ -57,7 +61,7 @@ export function ChatHistory({ items, loadingSessionId }: ChatHistoryProps) {
               <div
                 key={item.session_id}
                 className={`group/item flex justify-between items-center font-poppins p-2 text-xs transition ease-in-out duration-300 ${
-                  isHighlighted ? 'bg-neutral-100 rounded-lg' : 'text-gray-700 hover:bg-neutral-100 hover:rounded-lg'
+                  isHighlighted ? 'bg-gray-200 rounded-lg' : 'text-gray-700 rounded-lg hover:bg-gray-200'
                 }`}
               >
                 <Tooltip>
@@ -66,7 +70,21 @@ export function ChatHistory({ items, loadingSessionId }: ChatHistoryProps) {
                       onClick={() => router.push(`/chat/${item.session_id}`)}
                       className='w-[180px] truncate cursor-pointer'
                     >
-                      {item.title}
+                      <AnimatePresence>
+                        {animatedSessions.has(item.session_id) ? (
+                          <motion.span
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -10 }}
+                            transition={{ duration: 0.3 }}
+                            className='inline-block'
+                          >
+                            {item.title}
+                          </motion.span>
+                        ) : (
+                          <span>{item.title}</span>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side='top' className='font-poppins'>

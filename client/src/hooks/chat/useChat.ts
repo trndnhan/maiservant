@@ -132,7 +132,7 @@ export function useChat() {
       queryClient.setQueryData<Session[] | undefined>(['agentSessions'], (old) => [
         {
           session_id: newSessionId,
-          title: '…',
+          title: 'New Chat',
           agent_data: { model: { id: selectedModel.value, name: '', provider: selectedModel.provider } }
         },
         ...(old ?? [])
