@@ -38,7 +38,6 @@ const playfair = Playfair_Display({
   adjustFontFallback: false,
   display: 'swap'
 })
-const emoji = Noto_Color_Emoji({ subsets: ['emoji'], weight: ['400'], variable: '--font-emoji' })
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -62,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang='en'
-      className={`${jetbrains.variable} ${poppins.variable} ${roboto.variable} ${playfair.variable} ${emoji.variable}`}
+      className={`${jetbrains.variable} ${poppins.variable} ${roboto.variable} ${playfair.variable} `}
     >
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>{children}</Providers>

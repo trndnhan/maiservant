@@ -27,7 +27,6 @@ class Settings(BaseSettings):
     port: int = Field(..., alias="PORT")
     google_api_key: str = Field(..., alias="GOOGLE_API_KEY")
     co_api_key: str = Field(..., alias="CO_API_KEY")
-    groq_api_key: str = Field(..., alias="GROQ_API_KEY")
     mistral_api_key: str = Field(..., alias="MISTRAL_API_KEY")
     openrouter_api_key: str = Field(..., alias="OPENROUTER_API_KEY")
     access_public_key: str = Field(..., alias="ACCESS_PUBLIC_KEY")

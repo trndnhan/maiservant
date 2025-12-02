@@ -309,7 +309,12 @@ input[type='password']::-ms-clear {
   display: none;
 }
 
-/* Hide the built-in "eye" icon in Safari/Chrome/Opera */
-input[type='password']::-webkit-textfield-decoration-container {
-  display: none;
+/* Ensure password input shows dots/bullets */
+input[type='password'] {
+  font-family: inherit !important;
+  -webkit-text-security: disc !important;
+}
+
+input[type='password']:not(:placeholder-shown) {
+  color: inherit !important;
 }

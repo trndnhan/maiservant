@@ -20,7 +20,11 @@ from ..config.config import settings
 from ..models.user import User
 from ..repositories.auth_repository import get_user_manager
 
-cookie_transport = CookieTransport(cookie_max_age=3600)
+cookie_transport = CookieTransport(
+    cookie_max_age=3600,
+    cookie_secure=False,  # Set to True in production with HTTPS
+    cookie_samesite="lax",
+)
 
 
 def get_jwt_strategy() -> JWTStrategy:

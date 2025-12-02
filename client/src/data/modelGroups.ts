@@ -14,8 +14,9 @@ export const modelGroups: ModelGroup[] = [
   {
     family: 'Gemini',
     models: [
-      { label: 'Gemini 1.5 Flash-8B', value: 'gemini-1.5-flash-8b', provider: 'Google' },
-      { label: 'Gemini 2.0 Flash-Lite', value: 'gemini-2.0-flash-lite', provider: 'Google' }
+      { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash', provider: 'Google' },
+      { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro', provider: 'Google' },
+      { label: 'Gemini 2.0 Flash', value: 'gemini-2.0-flash-exp', provider: 'Google' }
     ]
   },
   {

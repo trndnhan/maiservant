@@ -74,7 +74,9 @@ async def get_session_messages(
     msgs.sort(key=lambda m: m["created_at"], reverse=True)
 
     if before:
-        before_dt = datetime.fromisoformat(before)
+        # Replace 'Z' with '+00:00' for proper ISO format parsing
+        before_iso = before.replace('Z', '+00:00')
+        before_dt = datetime.fromisoformat(before_iso)
         before_timestamp = int(before_dt.timestamp())
         msgs = [m for m in msgs if m["created_at"] < before_timestamp]
 
